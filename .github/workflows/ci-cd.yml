@@ -1,28 +1,27 @@
 name: Python CI/CD Pipeline
-
 # 🏁 Define when the workflow should run
 on:
   push:
     branches:
-      - main  # Runs when code is pushed to the main branch
+      - main # Runs when code is pushed to the main branch
   pull_request:
     branches:
-      - main  # Runs on pull request events targeting main
+      - main # Runs on pull request events targeting main
 
 jobs:
-  test:  # Define the test job
-    runs-on: ubuntu-latest  # Use an Ubuntu virtual machine
+  test: # Define the test job
+    runs-on: ubuntu-latest # Use an Ubuntu virtual machine
 
     steps:
-      # 1️⃣ Checkout the repository code
+    # 1️⃣ Checkout the repository code
       - name: Checkout Code
-        uses: actions/checkout@v3  # Predefined GitHub action to clone repo
+        uses: actions/checkout@v3 # Predefined GitHub action to clone repo
 
       # 2️⃣ Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify Python version
+          python-version: '3.9'
 
       # 3️⃣ Install dependencies
       - name: Install Dependencies
@@ -31,8 +30,9 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      # 4️⃣ Run Unit Tests
+      # 3️⃣ Install dependencies
       - name: Run Tests
         run: |
           source venv/bin/activate
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/src  # 👈 Fix: Add src to Python path
           pytest tests/
